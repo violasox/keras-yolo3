@@ -17,21 +17,20 @@ from PIL import Image, ImageFont, ImageDraw
 from yolo3.model import yolo_eval, yolo_body, tiny_yolo_body
 from yolo3.utils import letterbox_image
 import os
-os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 from keras.utils import multi_gpu_model
 gpu_num=1
 
 class YOLO(object):
     def __init__(self):
-        self.model_path = 'model_data/yolo.h5' # model path or trained weights path
+        self.model_path = 'logs/000/ep009-loss118.981-val_loss118.619.h5' # model path or trained weights path
         self.anchors_path = 'model_data/yolo_anchors.txt'
-        self.classes_path = 'model_data/coco_classes.txt'
+        self.classes_path = 'model_data/xview_classes.txt'
         self.score = 0.3
         self.iou = 0.45
         self.class_names = self._get_class()
         self.anchors = self._get_anchors()
         self.sess = K.get_session()
-        self.model_image_size = (416, 416) # fixed size or (None, None), hw
+        self.model_image_size = (320, 320) # fixed size or (None, None), hw, multiple of 32
         self.boxes, self.scores, self.classes = self.generate()
 
     def _get_class(self):
@@ -153,7 +152,7 @@ class YOLO(object):
             del draw
 
         end = timer()
-        print(end - start)
+        print('Eval time: {}'.format(end - start))
         return image
 
     def close_session(self):
@@ -212,7 +211,8 @@ def detect_img(yolo):
             continue
         else:
             r_image = yolo.detect_image(image)
-            r_image.show()
+            # r_image.show()
+            r_image.save('out2.jpg')
     yolo.close_session()
 
 

@@ -106,3 +106,16 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# image data
+chippedIms/
+valIms/
+trainIms/
+
+# label files
+dir.txt
+valDir.txt
+trainDir.txt
+
+# not my code
+wv_util.py
